@@ -1,6 +1,6 @@
 # usefull_bashes
 
-This repo contain small bash script you can use in your daily life. 
+This repo contains small bash scripts you can use in your daily life. 
 
 ## Git update 
 
