@@ -28,7 +28,7 @@ Options:
   -q, --quiet             Silencing scripts. Render testing and getting resources non interactive by default.
 "
 ################################################################################
-source 
+source spinner.sh
 ##################### GETTING ARGS #############################################
 # REQUIRE : getopt. Should be available on most bash terminal ##################
 # ENSURE : args variable setted with value provided by user   ##################
@@ -76,5 +76,18 @@ then
 	[ $debug -eq 0 ] && [ $checkout -eq 0 ] && echo "## Applied "
 	[ $checkout -eq 0 ] && git stash drop stash@{0}
 else 
-
+	[ $checkout -eq 0 ] && git stash > /dev/null
+	[ $checkout -eq 0 ] && git checkout $checkout_branch > /dev/null
+	[ $debug -eq 0 ] && echo "## Pulling "
+	git pull > /dev/null
+	[ $debug -eq 0 ] && echo "## Pulled "
+	[ $checkout -eq 0 ] && git checkout $base_branch > /dev/null
+	[ $debug -eq 0 ] && [ $checkout -eq 0 ] && echo "## Merging "
+	[ $checkout -eq 0 ] && git merge $checkout_branch > /dev/null
+	[ $debug -eq 0 ] && [ $checkout -eq 0 ] && echo "## Merged "
+	[ $checkout -eq 0 ] && git push > /dev/null
+	[ $debug -eq 0 ] && [ $checkout -eq 0 ] && echo "## Appling stash "
+	[ $checkout -eq 0 ] && git stash apply > /dev/null
+	[ $debug -eq 0 ] && [ $checkout -eq 0 ] && echo "## Applied "
+	[ $checkout -eq 0 ] && git stash drop stash@{0} > /dev/null
 fi
