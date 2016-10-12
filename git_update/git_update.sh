@@ -1,4 +1,5 @@
 #!/bin/bash
+SCRIPT_HOME="$(dirname $0)"
 # Git update function. -----------------------------------------------------------------
 check_specific () {
 	for el in ${!def_branches_asso[@]}
@@ -46,7 +47,7 @@ check_repo () {
 # Running process --------------------------------------------------------------
 # ### Process Variables ### #
 # Get options passed
-TEMP=`getopt -o dhqyb: --long --debug,help,non-interactive,quiet,default-branch: -n 'Softgallery Tools Initialisation' -- "$@"`
+TEMP=`getopt -o dhqb: --long --debug,help,quiet,default-branch: -n 'Softgallery Tools Initialisation' -- "$@"`
 # Help message to print for -h option (or when not providing correctly)
 HELP_MESSAGE="Usage: git_update.sh [OPTIONS] BASE_LOOKING_PATH
 
@@ -58,8 +59,7 @@ Options:
                           (ex: -b̀ \"SPECIFIC=MY_BRANCH\" will match every element containing SPECIFIC).
   -d, --debug             Debug. Run the script with debug information.
   -h, --help              Print this help.
-  -q, --quiet             Silencing scripts. Render testing and getting resources non interactive by default.
-  -y, --non-interactive   Run process non interactively.
+  -q, --quiet             Silencing scripts. Render testing and getting resources non interactive by default. 
 "
 # Set tasks variables to false and quick_conf to interactive (dv : docker_verion,
 # se : set_env, te : test_env, gr: ger_resources, s=serve, t=test, i: interactivity,
@@ -93,12 +93,11 @@ do
       debug=0;shift;;
     -q|--quiet)
       quiet=0;shift;;
-    -y|--non-interactive)
-      interactive=1;shift;;
     --) shift; break;;
     *) echo "You provided a wrong option"; echo $HELP_MESSAGE; exit 1;;
   esac
 done
+
 [ $debug -eq 0 ] && echo "---------------------------------------------------------------------------------"
 [ $debug -eq 0 ] && echo "Updating git at :: $(date)"
 

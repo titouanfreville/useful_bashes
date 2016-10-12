@@ -10,9 +10,8 @@ Bash script who will go in your git repository and update your local work branch
 
 ## Simple install
 
-`sudo -i && cd /tmp`
-`git clone git@github.com:titouanfreville/usefull_bashes.git || git clone https://github.com/titouanfreville/usefull_bashes.git`
-`cp usefull_bashes/git_update/git_update* /usr/bin/`
+Get `installation.sh` script : 
+Run `installation.sh`
 
 ## What is it doing
 
