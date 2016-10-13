@@ -10,7 +10,7 @@ Bash script who will go in your git repository and update your local work branch
 
 ## Simple install
 
-Get `installation.sh` script : 
+[Get `installation.sh` script](http://freville.iiens.net/scripts/)
 Run `installation.sh`
 
 ## What is it doing
