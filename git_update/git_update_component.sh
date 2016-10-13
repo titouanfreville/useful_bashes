@@ -6,11 +6,11 @@ red="\\033[1;31m"
 basic="\\033[0;39m"
 blue="\\033[1;34m"
 # ### ### #
-# ### Actions Variables ### #
+# ### Actions Variables ### #
 checkout=0
 quiet=1
 debug=1
-# ### ### ##
+# ### ### ##
 # ### Process Variables ### #
 # Get options passed
 TEMP=`getopt -o dhq --long --debug,help,quiet -n 'Softgallery Tools Initialisation' -- "$@"`
@@ -50,22 +50,22 @@ do
 done
 
 checkout_branch=$1
-if [ $# ]
+if [ $# ]
 base_branch=$(git branch | grep \* | cut -d ' ' -f2)
 if [[ $base_branch == *'master'* ]]
-	then echo -e "$red Not a normal use case. Only devil are allow to break Master"; exit 666;
+	then echo -e "$red Not a normal use case. Only devil are allow to break Master $basic"; exit 666;
 fi
-if [[ $checkout_branch == $base_branch ]]
+if [[ $checkout_branch == $base_branch ]]
 	then checkout=1
 fi
 
-if [ $quiet -neq 0 ]
+if [ $quiet -ne 0 ]
 then
 	[ $checkout -eq 0 ] && git stash
 	[ $checkout -eq 0 ] && git checkout $checkout_branch
-	[ $debug -eq 0 ] && echo "## Pulling "
+	[ $debug -eq 0 ] && echo "## Pulling "
 	git pull
-	[ $debug -eq 0 ] && echo "## Pulled "
+	[ $debug -eq 0 ] && echo "## Pulled "
 	[ $checkout -eq 0 ] && git checkout $base_branch
 	[ $debug -eq 0 ] && [ $checkout -eq 0 ] && echo "## Merging "
 	[ $checkout -eq 0 ] && git merge $checkout_branch
@@ -78,9 +78,9 @@ then
 else 
 	[ $checkout -eq 0 ] && git stash > /dev/null
 	[ $checkout -eq 0 ] && git checkout $checkout_branch > /dev/null
-	[ $debug -eq 0 ] && echo "## Pulling "
+	[ $debug -eq 0 ] && echo "## Pulling "
 	git pull > /dev/null
-	[ $debug -eq 0 ] && echo "## Pulled "
+	[ $debug -eq 0 ] && echo "## Pulled "
 	[ $checkout -eq 0 ] && git checkout $base_branch > /dev/null
 	[ $debug -eq 0 ] && [ $checkout -eq 0 ] && echo "## Merging "
 	[ $checkout -eq 0 ] && git merge $checkout_branch > /dev/null

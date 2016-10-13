@@ -1,5 +1,4 @@
 #!/bin/bash
-SCRIPT_HOME="$(dirname $0)"
 # Git update function. -----------------------------------------------------------------
 check_specific () {
 	for el in ${!def_branches_asso[@]}
@@ -9,7 +8,12 @@ check_specific () {
 		if [[ $1 == *"$el"* ]]
 			then 
 			[ $debug -eq 0 ] && echo "In specific case"
-			flock ~/git_updating_lock git_update_component.sh ${def_branches_asso[$el]}
+			if [ $quiet -ne 0 ]
+			then
+				flock ~/git_updating_lock git_update_component.sh ${def_branches_asso[$el]}
+			else
+				flock ~/git_updating_lock git_update_component.sh ${def_branches_asso[$el]} > /dev/null
+			fi
 			return  0
 		else 
 			[ $debug -eq 0 ] && echo "Not in specific case"
@@ -32,10 +36,15 @@ check_repo () {
 				[ $debug -eq 0 ] && echo "Updating ${repo} ####### "
 				check_specific $repo
 				if [ $? -eq 0 ]
-					then 
-						[ $debug -eq 0 ] && echo 'Done specific way'
-					else 			
+				then 
+					[ $debug -eq 0 ] && echo 'Done specific way'
+				else 			
+					if [ $quiet -ne 0 ]
+					then
 						flock ~/git_updating_lock git_update_component.sh 'master'
+					else
+						flock ~/git_updating_lock git_update_component.sh 'master' > /dev/null
+					fi
 				fi
 				[ $debug -eq 0 ] && echo "Done #######"
 			fi
@@ -61,10 +70,6 @@ Options:
   -h, --help              Print this help.
   -q, --quiet             Silencing scripts. Render testing and getting resources non interactive by default. 
 "
-# Set tasks variables to false and quick_conf to interactive (dv : docker_verion,
-# se : set_env, te : test_env, gr: ger_resources, s=serve, t=test, i: interactivity,
-# ser_sil=verbosity of server block).
-dv=1; se=1; te=1; gr=1; s=1; t=1; i=0; ser_sil="";
 # Default for branch name. 
 default_branches=""
 # Associative array using repo name as Key and default branch as Value.
@@ -73,6 +78,7 @@ key_array=''
 tab_length=-1
 # Debug variable
 debug=1
+quiet=1
 # ### ### #
 ################################################################################
 ##################### GETTING ARGS #############################################
