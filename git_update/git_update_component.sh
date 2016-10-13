@@ -47,11 +47,10 @@ do
     *) echo "You provided a wrong option"; echo $HELP_MESSAGE; exit 1;;
   esac
 done
-
 checkout_branch=$1
 base_branch=$(git branch | grep \* | cut -d ' ' -f2)
 if [[ $base_branch == *'master'* ]]
-	then echo -e "$red Not a normal use case. Only devil are allow to break Master $basic"; exit 666;
+	then echo -e "$red Repository : $(pwd) - Not a normal use case. Only devil are allow to break Master $basic"; exit 666;
 fi
 if [[ $checkout_branch == $base_branch ]]
 	then checkout=1
@@ -74,18 +73,27 @@ then
 	[ $debug -eq 0 ] && [ $checkout -eq 0 ] && echo "## Applied "
 	[ $checkout -eq 0 ] && git stash drop stash@{0}
 else 
-	[ $checkout -eq 0 ] && git stash > /dev/null
-	[ $checkout -eq 0 ] && git checkout $checkout_branch > /dev/null
-	[ $debug -eq 0 ] && echo "## Pulling "
-	git pull > /dev/null
+	source spinner.sh
+	[ $checkout -eq 0 ] && start_spinner "Saving current work and going to update branch : $checkout_branch"
+	[ $checkout -eq 0 ] && git stash > /dev/null 1> /dev/null 2> /dev/null;
+	[ $checkout -eq 0 ] && git checkout $checkout_branch > /dev/null 1> /dev/null 2> /dev/null;
+	[ $checkout -eq 0 ] && stop_spinner $? "Saving current work and going to update branch : $checkout_branch"
+	[ $debug -eq 0 ] && echo "## Pulling " 
+	start_spinner "Getting updates"
+	git pull > /dev/null 1> /dev/null 2> /dev/null;
+	stop_spinner $? "Getting updates"
 	[ $debug -eq 0 ] && echo "## Pulled "
-	[ $checkout -eq 0 ] && git checkout $base_branch > /dev/null
 	[ $debug -eq 0 ] && [ $checkout -eq 0 ] && echo "## Merging"
-	[ $checkout -eq 0 ] && git merge $checkout_branch > /dev/null
+	[ $checkout -eq 0 ] && start_spinner "Merging branch : $checkout_branch into $base_branch"
+	[ $checkout -eq 0 ] && git checkout $base_branch > /dev/null 1> /dev/null 2> /dev/null;
+	[ $checkout -eq 0 ] && git merge $checkout_branch > /dev/null 1> /dev/null 2> /dev/null;
+	[ $checkout -eq 0 ] && git push > /dev/null 1> /dev/null 2> /dev/null;
+	[ $checkout -eq 0 ] && stop_spinner $? "Merging branch : $checkout_branch into $base_branch"
 	[ $debug -eq 0 ] && [ $checkout -eq 0 ] && echo "## Merged"
-	[ $checkout -eq 0 ] && git push > /dev/null
 	[ $debug -eq 0 ] && [ $checkout -eq 0 ] && echo "## Appling stash"
-	[ $checkout -eq 0 ] && git stash apply > /dev/null
+	[ $checkout -eq 0 ] && start_spinner "Appling back your job."
+	[ $checkout -eq 0 ] && git stash apply > /dev/null 1> /dev/null 2> /dev/null;
+	[ $checkout -eq 0 ] && git stash drop stash@{0} > /dev/null 1> /dev/null 2> /dev/null;
+	[ $checkout -eq 0 ] && stop_spinner $? "Appling back your job."
 	[ $debug -eq 0 ] && [ $checkout -eq 0 ] && echo "## Applied"
-	[ $checkout -eq 0 ] && git stash drop stash@{0} > /dev/null
 fi

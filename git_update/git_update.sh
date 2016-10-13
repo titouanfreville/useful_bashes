@@ -10,9 +10,11 @@ check_specific () {
 			[ $debug -eq 0 ] && echo "In specific case"
 			if [ $quiet -ne 0 ]
 			then
-				flock ~/git_updating_lock git_update_component.sh ${def_branches_asso[$el]}
+				[ $debug -eq 0 ] && flock /tmp/git_updating_lock git_update_component.sh -d ${def_branches_asso[$el]} || \
+				flock /tmp/git_updating_lock git_update_component.sh ${def_branches_asso[$el]}
 			else
-				flock ~/git_updating_lock git_update_component.sh ${def_branches_asso[$el]} > /dev/null
+				[ $debug -eq 0 ] && flock /tmp/git_updating_lock git_update_component.sh -dq ${def_branches_asso[$el]} || \
+				flock /tmp/git_updating_lock git_update_component.sh -q ${def_branches_asso[$el]}
 			fi
 			return  0
 		else 
@@ -23,7 +25,7 @@ check_specific () {
 }
 
 check_repo () {
-	cd $1
+	[ $quiet -ne 0 ] && cd $1 || { cd $1 > /dev/null 1> /dev/null 2> /dev/null; }
 	[ $debug -eq 0 ] && echo "Path to look : $1"
 	for repo in ${1}/*
 	do
@@ -41,9 +43,11 @@ check_repo () {
 				else 			
 					if [ $quiet -ne 0 ]
 					then
-						flock ~/git_updating_lock git_update_component.sh 'master'
+						[ $debug -eq 0 ] && flock /tmp/git_updating_lock git_update_component.sh -d 'master' || \
+						flock /tmp/git_updating_lock git_update_component.sh 'master'
 					else
-						flock ~/git_updating_lock git_update_component.sh 'master' > /dev/null
+						[ $debug -eq 0 ] && flock /tmp/git_updating_lock git_update_component.sh -dq 'master' || \
+						flock /tmp/git_updating_lock git_update_component.sh -q 'master'
 					fi
 				fi
 				[ $debug -eq 0 ] && echo "Done #######"
