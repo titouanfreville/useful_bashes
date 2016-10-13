@@ -27,7 +27,7 @@ Options:
   -q, --quiet             Silencing scripts. Render testing and getting resources non interactive by default.
 "
 ################################################################################
-source spinner.sh
+#source spinner.sh
 ##################### GETTING ARGS #############################################
 # REQUIRE : getopt. Should be available on most bash terminal ##################
 # ENSURE : args variable setted with value provided by user   ##################
@@ -49,7 +49,6 @@ do
 done
 
 checkout_branch=$1
-if [ $# ]
 base_branch=$(git branch | grep \* | cut -d ' ' -f2)
 if [[ $base_branch == *'master'* ]]
 	then echo -e "$red Not a normal use case. Only devil are allow to break Master $basic"; exit 666;
@@ -81,12 +80,12 @@ else
 	git pull > /dev/null
 	[ $debug -eq 0 ] && echo "## Pulled "
 	[ $checkout -eq 0 ] && git checkout $base_branch > /dev/null
-	[ $debug -eq 0 ] && [ $checkout -eq 0 ] && echo "## Merging "
+	[ $debug -eq 0 ] && [ $checkout -eq 0 ] && echo "## Merging"
 	[ $checkout -eq 0 ] && git merge $checkout_branch > /dev/null
-	[ $debug -eq 0 ] && [ $checkout -eq 0 ] && echo "## Merged "
+	[ $debug -eq 0 ] && [ $checkout -eq 0 ] && echo "## Merged"
 	[ $checkout -eq 0 ] && git push > /dev/null
-	[ $debug -eq 0 ] && [ $checkout -eq 0 ] && echo "## Appling stash "
+	[ $debug -eq 0 ] && [ $checkout -eq 0 ] && echo "## Appling stash"
 	[ $checkout -eq 0 ] && git stash apply > /dev/null
-	[ $debug -eq 0 ] && [ $checkout -eq 0 ] && echo "## Applied "
+	[ $debug -eq 0 ] && [ $checkout -eq 0 ] && echo "## Applied"
 	[ $checkout -eq 0 ] && git stash drop stash@{0} > /dev/null
 fi
