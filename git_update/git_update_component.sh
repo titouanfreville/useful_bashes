@@ -49,8 +49,8 @@ do
 done
 checkout_branch=$1
 base_branch=$(git branch | grep \* | cut -d ' ' -f2)
-if [[ $base_branch == *'master'* ]]
-	then echo -e "$red Repository : $(pwd) - Not a normal use case. Only devil are allow to break Master $basic"; exit 666;
+if [[ $base_branch == *'master'* ]] || [[ $base_branch == *'develop'* ]]
+	then echo -e "$red Repository : $(pwd) - Not a normal use case. Only devil are allow to break Master or Develop branches $basic"; git pull; exit 666;
 fi
 if [[ $checkout_branch == $base_branch ]]
 	then checkout=1
