@@ -50,7 +50,7 @@ done
 checkout_branch=$1
 base_branch=$(git branch | grep \* | cut -d ' ' -f2)
 if [[ $base_branch == *'master'* ]] || [[ $base_branch == *'develop'* ]]
-	then echo -e "$red Repository : $(pwd) - Not a normal use case. Only devil are allow to break Master or Develop branches $basic"; git pull; exit 666;
+	then echo -e "$red Repository : $(pwd) - Not a normal use case. Only devils are allowed to break Master or Develop branches $basic"; git pull; exit 666;
 fi
 if [[ $checkout_branch == $base_branch ]]
 	then checkout=1
@@ -68,7 +68,7 @@ then
 	[ $checkout -eq 0 ] && git merge $checkout_branch
 	[ $debug -eq 0 ] && [ $checkout -eq 0 ] && echo "## Merged "
 	[ $checkout -eq 0 ] && git push
-	[ $debug -eq 0 ] && [ $checkout -eq 0 ] && echo "## Appling stash "
+	[ $debug -eq 0 ] && [ $checkout -eq 0 ] && echo "## Applying stash "
 	[ $checkout -eq 0 ] && git stash apply
 	[ $debug -eq 0 ] && [ $checkout -eq 0 ] && echo "## Applied "
 	[ $checkout -eq 0 ] && git stash drop stash@{0}
@@ -90,10 +90,10 @@ else
 	[ $checkout -eq 0 ] && git push > /dev/null 1> /dev/null 2> /dev/null;
 	[ $checkout -eq 0 ] && stop_spinner $? "Merging branch : $checkout_branch into $base_branch"
 	[ $debug -eq 0 ] && [ $checkout -eq 0 ] && echo "## Merged"
-	[ $debug -eq 0 ] && [ $checkout -eq 0 ] && echo "## Appling stash"
-	[ $checkout -eq 0 ] && start_spinner "Appling back your job."
+	[ $debug -eq 0 ] && [ $checkout -eq 0 ] && echo "## Applying stash"
+	[ $checkout -eq 0 ] && start_spinner "Applying back your job."
 	[ $checkout -eq 0 ] && git stash apply > /dev/null 1> /dev/null 2> /dev/null;
 	[ $checkout -eq 0 ] && git stash drop stash@{0} > /dev/null 1> /dev/null 2> /dev/null;
-	[ $checkout -eq 0 ] && stop_spinner $? "Appling back your job."
+	[ $checkout -eq 0 ] && stop_spinner $? "Applying back your job."
 	[ $debug -eq 0 ] && [ $checkout -eq 0 ] && echo "## Applied"
 fi

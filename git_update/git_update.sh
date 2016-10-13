@@ -60,15 +60,17 @@ check_repo () {
 # Running process --------------------------------------------------------------
 # ### Process Variables ### #
 # Get options passed
-TEMP=`getopt -o dhqb: --long --debug,help,quiet,default-branch: -n 'Softgallery Tools Initialisation' -- "$@"`
+TEMP=`getopt -o dhqb: --long --debug,help,quiet,default-branch: -n 'Git Update safe script' -- "$@"`
 # Help message to print for -h option (or when not providing correctly)
 HELP_MESSAGE="Usage: git_update.sh [OPTIONS] BASE_LOOKING_PATH
 
 This is a small who will look into every directory of provided path to check and update git repository.
 This script require getopt to run. (Install gnu-getopt to run from mac).
 
+WARING : This script will never Merge something in *master* or *develop* branches.
+
 Options:
-  -b, --default-branch    Default branch for given repository pattern. Foramt : \"REPOSITORY=BRANCH\". 
+  -b, --default-branch    Default branch for given repository pattern. Format : \"REPOSITORY=BRANCH\". 
                           (ex: -b̀ \"SPECIFIC=MY_BRANCH\" will match every element containing SPECIFIC).
   -d, --debug             Debug. Run the script with debug information.
   -h, --help              Print this help.
