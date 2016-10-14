@@ -1,4 +1,4 @@
-# usefull_bashes
+# useful_bashes
 
 This repo contains small bash scripts you can use in your daily life. 
 
